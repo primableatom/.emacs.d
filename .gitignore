@@ -1,0 +1,13 @@
+/.cache/
+/backup
+/eln-cache/
+/elpa/
+/history
+/transient/
+/auto-save-list/
+/eshell/
+/treesitter-grammers
+projectile-bookmarks.eld
+custom.el
+ido.*
+.lsp-session*
