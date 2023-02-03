@@ -81,7 +81,10 @@
 (setq display-time-interval 1)
 (display-time-mode)
 
-(load-theme 'modus-vivendi)
+(use-package dracula-theme
+  :ensure t
+  :config
+  (load-theme 'dracula t))
 
 (use-package avy
   :ensure t
@@ -95,7 +98,7 @@
   (vertico-mode))
 
 (use-package marginalia
-  :ensure t 
+  :ensure t
   :config
   (marginalia-mode))
 
@@ -145,6 +148,8 @@
 
 (use-package consult
   :ensure t
+  :config
+  (consult-customize consult-ripgrep consult-buffer :preview-key nil)
   :bind (("C-x b" . consult-buffer)
          ("M-y" . consult-yank-pop)
          ("C-s" . consult-line)
@@ -160,8 +165,7 @@
         completion-category-overrides nil))
 
 (use-package magit
-  :ensure t
-)
+  :ensure t)
 
 (use-package markdown-mode
   :ensure t)
@@ -204,6 +208,11 @@
   (lsp-mode . lsp-enable-which-key-integration)
   :commands (lsp lsp-deferred))
 
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
+
+
 (use-package  lsp-ui
   :ensure t
   :commands lsp-ui-mode)
@@ -216,6 +225,9 @@
 
 (use-package flycheck
   :ensure t
+  :config
+  (flycheck-add-mode 'ruby-rubocop 'ruby-ts-mode)
+  (setq flycheck-ruby-rubocop-executable "~/.asdf/shims/rubocop")
   :init (global-flycheck-mode))
 
 
@@ -236,6 +248,11 @@
   :ensure t
   :config
   (setq ruby-end-insert-newline nil))
+
+(use-package web-mode
+  :ensure t)
+
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 
 (defun revert-buffer-no-confirm ()
 1  "Revert buffer without confirmation."
