@@ -152,7 +152,6 @@
   (consult-customize consult-ripgrep consult-buffer :preview-key nil)
   :bind (("C-x b" . consult-buffer)
          ("M-y" . consult-yank-pop)
-         ("C-s" . consult-line)
 	 ("C-c p f" . consult-find)
 	 ("C-c p s" . consult-ripgrep)
          ))
@@ -252,6 +251,28 @@
 (use-package web-mode
   :ensure t)
 
+(use-package popper
+  :ensure t
+  :bind
+  (("C-`"   . popper-toggle-latest)
+   ("M-`"   . popper-cycle)
+   ("C-M-`" . popper-toggle-type))
+  :config
+  (setq popper-reference-buffers
+      (append popper-reference-buffers
+              '("^\\*eshell.*\\*$" eshell-mode
+                "^\\*shell.*\\*$"  shell-mode
+                "^\\*term.*\\*$"   term-mode
+                "^\\*vterm.*\\*$"  vterm-mode
+		"\\*Messages\\*"
+		 "Output\\*$"
+		 help-mode
+		 compilation-mode)))
+  (setq popper-window-height 0.33))
+
+(popper-mode +1)
+(popper-echo-mode +1)
+
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 
 (defun revert-buffer-no-confirm ()
@@ -270,6 +291,10 @@
 (global-set-key (kbd "S-<up>") 'windmove-up)
 (global-set-key (kbd "S-<down>") 'windmove-down)
 (global-set-key (kbd "C-c f p") 'go-to-emacs-init-file)
+(global-set-key (kbd "C-.") 'comment-or-uncomment-region)
+(global-set-key (kbd "C-c v t") 'vterm)
+(global-set-key (kbd "C-c p v t") 'projectile-run-vterm)
+
 
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
