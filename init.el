@@ -251,6 +251,9 @@
 (use-package web-mode
   :ensure t)
 
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+
+
 (use-package popper
   :ensure t
   :bind
@@ -273,7 +276,14 @@
 (popper-mode +1)
 (popper-echo-mode +1)
 
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(use-package treemacs
+  :ensure t
+  :defer t
+  :config
+   (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+    (treemacs-fringe-indicator-mode 'always))
+
 
 (defun revert-buffer-no-confirm ()
 1  "Revert buffer without confirmation."
@@ -294,6 +304,7 @@
 (global-set-key (kbd "C-.") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-c v t") 'vterm)
 (global-set-key (kbd "C-c p v t") 'projectile-run-vterm)
+(global-set-key (kbd "C-c t") 'treemacs)
 
 
 
