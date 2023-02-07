@@ -233,7 +233,9 @@
   :ensure t
   :config
   (flycheck-add-mode 'ruby-rubocop 'ruby-ts-mode)
+  (flycheck-add-mode 'javascript-eslint 'js-ts-mode)
   (setq flycheck-ruby-rubocop-executable "~/.asdf/shims/rubocop")
+  (setq flycheck-javascript-eslint-executable "~/.asdf/shims/eslint")
   :init (global-flycheck-mode))
 
 
