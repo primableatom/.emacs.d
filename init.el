@@ -29,6 +29,10 @@
 
 (require 'use-package)
 
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
 
 (use-package which-key
   :ensure t
@@ -204,12 +208,14 @@
   :hook
   (lsp-completion-mode . my/lsp-mode-setup-completion)
   (rust-ts-mode . lsp-deferred)
+  (go-ts-mode . lsp-deferred)
   (lsp-mode . lsp-enable-which-key-integration)
   :commands (lsp lsp-deferred))
 
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
+(add-to-list 'auto-mode-alist '("\\go.mod\\'" . go-mod-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-ts-mode))
 (add-to-list 'auto-mode-alist '("\\Gemfile\\'" . ruby-ts-mode))
 (add-to-list 'auto-mode-alist '("\\Capfile\\'" . ruby-ts-mode))
