@@ -208,14 +208,21 @@
   :commands (lsp lsp-deferred))
 
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-ts-mode))
+(add-to-list 'auto-mode-alist '("\\Gemfile\\'" . ruby-ts-mode))
+(add-to-list 'auto-mode-alist '("\\Capfile\\'" . ruby-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.gemspec\\'" . ruby-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
-
+(add-to-list 'auto-mode-alist '("\\.ts?\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.jsn\\'" . json-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.y?ml\\'" . yaml-ts-mode))
 
 (use-package  lsp-ui
   :ensure t
   :commands lsp-ui-mode)
-
 
 (use-package consult-lsp
   :ensure t
@@ -253,7 +260,6 @@
 
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 
-
 (use-package popper
   :ensure t
   :bind
@@ -268,6 +274,7 @@
                 "^\\*term.*\\*$"   term-mode
                 "^\\*vterm.*\\*$"  vterm-mode
 		"\\*Messages\\*"
+		"\\*Async-native-compile-log\\*"
 		 "Output\\*$"
 		 help-mode
 		 compilation-mode)))
@@ -280,19 +287,29 @@
   :ensure t
   :defer t
   :config
-   (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (treemacs-fringe-indicator-mode 'always))
+  (treemacs-project-follow-mode t)
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-git-mode 'deferred)
+  (treemacs-fringe-indicator-mode 'always))
+
+
+(use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure t)
+
+(use-package treemacs-magit
+  :after (treemacs magit)
+  :ensure t)
 
 
 (defun revert-buffer-no-confirm ()
-1  "Revert buffer without confirmation."
+  "Revert buffer without confirmation."
   (interactive) (revert-buffer t t))
 
 (defun go-to-emacs-init-file ()
   "Go to init.el under .emacs.d"
   (interactive) (find-file (f-join user-emacs-directory "init.el")))
-
 
 ;; keybindings
 
@@ -311,5 +328,3 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (when (file-exists-p custom-file)
     (load custom-file))
-
-
