@@ -319,6 +319,17 @@
   "Go to init.el under .emacs.d"
   (interactive) (find-file (f-join user-emacs-directory "init.el")))
 
+
+(defun treemacs/toggle ()
+  "Initialize or toggle treemacs"
+  (interactive)
+  (require 'treemacs)
+  (pcase (treemacs-current-visibility)
+    (`visible (delete-window (treemacs-get-local-window)))
+    (_ (if (projectile-project-p)
+           (treemacs-add-and-display-current-project-exclusively)
+         (treemacs)))))
+
 ;; keybindings
 
 (global-set-key (kbd "S-<left>") 'windmove-left)
@@ -329,7 +340,7 @@
 (global-set-key (kbd "C-.") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-c v t") 'vterm)
 (global-set-key (kbd "C-c p v t") 'projectile-run-vterm)
-(global-set-key (kbd "C-c t") 'treemacs)
+(global-set-key (kbd "C-c t") 'treemacs/toggle)
 
 
 
