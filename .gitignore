@@ -11,3 +11,5 @@ projectile-bookmarks.eld
 custom.el
 ido.*
 .lsp-session*
+projects
+recentf

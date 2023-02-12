@@ -187,7 +187,10 @@
   (setq sp-show-pair-from-inside t))
 
 (use-package projectile
-  :ensure t)
+  :ensure t
+  :config
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (projectile-mode +1))
 
 (use-package rg
   :ensure t)
@@ -225,6 +228,7 @@
 (add-to-list 'auto-mode-alist '("\\.ts?\\'" . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.jsn\\'" . json-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.y?ml\\'" . yaml-ts-mode))
+(add-to-list 'auto-mode-alist '("\\*dashboard*\\'" . dashboard-mode))
 
 (use-package  lsp-ui
   :ensure t
@@ -330,6 +334,25 @@
            (treemacs-add-and-display-current-project-exclusively)
          (treemacs)))))
 
+(use-package page-break-lines
+  :ensure t)
+
+(use-package org-superstar
+  :ensure t
+  :hook
+  (org-mode . (lambda () (org-superstar-mode 1))))
+
+(use-package dashboard
+  :ensure t
+  :init
+  (setq dashboard-items '((projects . 5)))
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-page-separator "\n\f\n")
+  :config
+  (dashboard-setup-startup-hook)
+  (page-break-lines-mode))
+
 ;; keybindings
 
 (global-set-key (kbd "S-<left>") 'windmove-left)
@@ -339,7 +362,6 @@
 (global-set-key (kbd "C-c f p") 'go-to-emacs-init-file)
 (global-set-key (kbd "C-.") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-c v t") 'vterm)
-(global-set-key (kbd "C-c p v t") 'projectile-run-vterm)
 (global-set-key (kbd "C-c t") 'treemacs/toggle)
 
 
