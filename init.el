@@ -1,18 +1,20 @@
 (setq inhibit-splash-screen t)
 (setq initial-major-mode 'fundamental-mode)
 (setq make-backup-files nil)
+(setq create-lockfiles nil)
 (setq auto-revert-interval 3)
 (setq auto-revert-check-vc-info t)
 (setq backup-directory-alist '(("" . "~/.emacs.d/backup")))
 
 (when (string= system-type "darwin")
-  ((setq mac-command-modifier 'meta)))
+  (setq mac-command-modifier 'meta))
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (global-auto-revert-mode)
 
 
 (ido-mode t)
+
 (menu-bar-mode -1)
 
 (savehist-mode)
@@ -160,8 +162,13 @@
         completion-category-defaults nil
         completion-category-overrides nil))
 
-(use-package affe
+(use-package flx
   :ensure t)
+
+(use-package flx-ido
+  :ensure t
+  :init (flx-ido-mode 1))
+
 
 (use-package magit
   :ensure t)
@@ -328,34 +335,27 @@
 	 ("C-c a f" . affe-find)
 	 ("C-c a r" . affe-grep)))
 
-(use-package consult-lsp
+(use-package yasnippet
   :ensure t
-  :commands
-  (consult-lsp-symbols consult-lsp-diagnostics consult-lsp-file-symbols))
-
-(use-package lsp-mode
-  :ensure t
-  :custom
-  (lsp-completion-provider :none)
   :init
-  (defun my/orderless-dispatch-flex-first (_pattern index _total)
-    (and (eq index 0) 'orderless-flex))
+  (yas-global-mode 1))
 
-  (defun my/lsp-mode-setup-completion ()
-    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          '(orderless)))
-  (add-hook 'orderless-style-dispatchers #'my/orderless-dispatch-flex-first nil 'local)
-  (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point)))
-  :hook
-  (lsp-completion-mode . my/lsp-mode-setup-completion)
-  (rust-ts-mode . lsp-deferred)
-  (go-ts-mode . lsp-deferred)
-  (lsp-mode . lsp-enable-which-key-integration)
-  :commands (lsp lsp-deferred))
+(add-to-list 'load-path "~/.emacs.d/lsp-bridge")
+(require 'lsp-bridge)
+(global-lsp-bridge-mode)
+(setq lsp-bridge-enable-hover-diagnostic t)
+(setq lsp-bridge-enable-auto-format-code t)
 
-(use-package  lsp-ui
-  :ensure t
-  :commands lsp-ui-mode)
+(add-hook 'prog-mode-hook
+	  (lambda ()
+	    (define-key lsp-bridge-mode-map (kbd "M-.") 'lsp-bridge-find-def)
+	    (define-key lsp-bridge-mode-map (kbd "M-,") 'lsp-bridge-find-def-return)
+	    (define-key lsp-bridge-mode-map (kbd "M-/") 'lsp-bridge-find-references)))
+
+
+(use-package multiple-cursors
+  :ensure t)
+
 
 ;; autoloads
 
@@ -372,6 +372,7 @@
 (add-to-list 'auto-mode-alist '("\\.ts?\\'" . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.jsn\\'" . json-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.y?ml\\'" . yaml-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.java\\'" . java-ts-mode))
 (add-to-list 'auto-mode-alist '("\\*dashboard*\\'" . dashboard-mode))
 
 
@@ -385,6 +386,7 @@
 (global-set-key (kbd "C-.") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-c v t") 'vterm)
 (global-set-key (kbd "C-c t") 'treemacs/toggle)
+(global-set-key (kbd "C-M-j") 'mc/mark-all-dwim)
 
 
 

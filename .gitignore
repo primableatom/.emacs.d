@@ -13,3 +13,9 @@ ido.*
 .lsp-session*
 projects
 recentf
+.dap-breakpoints
+.mc-lists.el
+eclipse.jdt.ls
+request
+workspace
+lsp-bridge
