@@ -19,3 +19,4 @@ eclipse.jdt.ls
 request
 workspace
 lsp-bridge
+flycheck_init.el

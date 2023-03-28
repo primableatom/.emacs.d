@@ -322,7 +322,6 @@
 
 (use-package consult
   :ensure t
-  :after affe
   :config
   (consult-customize
    consult-ripgrep consult-buffer :preview-key nil
@@ -331,9 +330,7 @@
   :bind (("C-x b" . consult-buffer)
          ("M-y" . consult-yank-pop)
 	 ("C-c p f" . consult-find)
-	 ("C-c p s r" . consult-ripgrep)
-	 ("C-c a f" . affe-find)
-	 ("C-c a r" . affe-grep)))
+	 ("C-c p s r" . consult-ripgrep)))
 
 (use-package yasnippet
   :ensure t
