@@ -6,6 +6,7 @@
 (setq auto-revert-check-vc-info t)
 (setq backup-directory-alist '(("" . "~/.emacs.d/backup")))
 
+
 (when (string= system-type "darwin")
   (setq mac-command-modifier 'meta))
 
@@ -204,7 +205,7 @@
 
 
 (if (treesit-available-p)
-    (setq treesit-extra-load-path '("~/.emacs.d/treesitter-grammers")))  
+    (setq treesit-extra-load-path '("~/.emacs.d/treesitter-grammers")))
 
 (use-package all-the-icons
   :ensure t)
@@ -341,18 +342,17 @@
 (require 'lsp-bridge)
 (global-lsp-bridge-mode)
 (setq lsp-bridge-enable-hover-diagnostic t)
-(setq lsp-bridge-enable-auto-format-code t)
+(setq lsp-bridge-enable-auto-format-code nil)
 
 (add-hook 'prog-mode-hook
 	  (lambda ()
 	    (define-key lsp-bridge-mode-map (kbd "M-.") 'lsp-bridge-find-def)
 	    (define-key lsp-bridge-mode-map (kbd "M-,") 'lsp-bridge-find-def-return)
-	    (define-key lsp-bridge-mode-map (kbd "M-/") 'lsp-bridge-find-references)))
-
+	    (define-key lsp-bridge-mode-map (kbd "M-/") 'lsp-bridge-find-references)
+	    (define-key lsp-bridge-mode-map (kbd "M-\\") 'lsp-bridge-code-format)))
 
 (use-package multiple-cursors
   :ensure t)
-
 
 ;; autoloads
 
@@ -390,3 +390,4 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (when (file-exists-p custom-file)
     (load custom-file))
+
