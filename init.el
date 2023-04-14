@@ -384,8 +384,12 @@
 (global-set-key (kbd "C-c v t") 'vterm)
 (global-set-key (kbd "C-c t") 'treemacs/toggle)
 (global-set-key (kbd "C-M-j") 'mc/mark-all-dwim)
-
-
+(global-set-key (kbd "C-M-c") 'mc/edit-lines)
+(global-set-key (kbd "C-M-/") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-M-,") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-M-.") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-M-<") 'mc/skip-to-previous-like-this)
+(global-set-key (kbd "C-M->") 'mc/skip-to-next-like-this)
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (when (file-exists-p custom-file)
