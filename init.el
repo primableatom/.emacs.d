@@ -367,7 +367,7 @@
 (add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.ts?\\'" . tsx-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.jsn\\'" . json-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.y?ml\\'" . yaml-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.java\\'" . java-ts-mode))
 (add-to-list 'auto-mode-alist '("\\*dashboard*\\'" . dashboard-mode))
