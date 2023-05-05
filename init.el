@@ -48,7 +48,7 @@
 (setq enable-recursive-minibuffers t)
 (setq completion-cycle-threshold 1)
 (setq completions-detailed t)
-(setq tab-always-indent t)
+(setq tab-always-indent 'complete)
 (setq completion-styles '(basic initials substring))
 (setq completion-auto-help 'always)
 (setq completion-auto-select 'second-tab)
