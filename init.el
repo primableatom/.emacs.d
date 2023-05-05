@@ -370,6 +370,7 @@
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.y?ml\\'" . yaml-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.java\\'" . java-ts-mode))
+(add-to-list 'auto-mode-alist '("\\*Dockerfile*\\'" . dockerfile-ts-mode))
 (add-to-list 'auto-mode-alist '("\\*dashboard*\\'" . dashboard-mode))
 
 
