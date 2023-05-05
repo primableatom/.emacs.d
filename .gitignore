@@ -9,6 +9,7 @@
 /treesitter-grammers
 projectile-bookmarks.eld
 custom.el
+*.elc
 ido.*
 .lsp-session*
 projects
