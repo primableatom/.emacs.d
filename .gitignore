@@ -8,6 +8,7 @@
 /eshell/
 /treesitter-grammers
 projectile-bookmarks.eld
+projectile.cache
 custom.el
 *.elc
 ido.*

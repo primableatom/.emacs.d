@@ -45,7 +45,7 @@
   :config
   (which-key-mode))
 
-(setq enable-recursive-minibuffers t)
+(setq enable-recursive-minibuffers nil)
 (setq completion-cycle-threshold 1)
 (setq completions-detailed t)
 (setq tab-always-indent 'complete)
@@ -352,6 +352,9 @@
 	    (define-key lsp-bridge-mode-map (kbd "M-\\") 'lsp-bridge-code-format)))
 
 (use-package multiple-cursors
+  :ensure t)
+
+(use-package terraform-mode
   :ensure t)
 
 ;; autoloads
