@@ -54,6 +54,16 @@
 (setq completion-auto-select 'second-tab)
 (setq completions-max-height 10)
 
+(if (version< emacs-version "29")
+    (user-error "We need at least emacs 29"))
+
+(use-package treesit-auto
+  :ensure t
+  :config
+  (setq treesit-auto-install t)
+  (global-treesit-auto-mode))
+
+
 (fido-vertical-mode)
 (setq icomplete-delay-completions-threshold 4000)
 (define-key minibuffer-mode-map (kbd "TAB") 'minibuffer-complete)
@@ -203,10 +213,6 @@
   (setq flycheck-javascript-eslint-executable "~/.asdf/shims/eslint")
   :init (global-flycheck-mode))
 
-
-(if (treesit-available-p)
-    (setq treesit-extra-load-path '("~/.emacs.d/treesitter-grammers")))
-
 (use-package all-the-icons
   :ensure t)
 
@@ -338,18 +344,8 @@
   :init
   (yas-global-mode 1))
 
-(add-to-list 'load-path "~/.emacs.d/lsp-bridge")
-(require 'lsp-bridge)
-(global-lsp-bridge-mode)
-(setq lsp-bridge-enable-hover-diagnostic t)
-(setq lsp-bridge-enable-auto-format-code nil)
-
-(add-hook 'prog-mode-hook
-	  (lambda ()
-	    (define-key lsp-bridge-mode-map (kbd "M-.") 'lsp-bridge-find-def)
-	    (define-key lsp-bridge-mode-map (kbd "M-,") 'lsp-bridge-find-def-return)
-	    (define-key lsp-bridge-mode-map (kbd "M-/") 'lsp-bridge-find-references)
-	    (define-key lsp-bridge-mode-map (kbd "M-\\") 'lsp-bridge-code-format)))
+(add-hook 'rust-ts-mode-hook #'eglot-ensure)
+(add-hook 'go-ts-mode-hook #'eglot-ensure)
 
 (use-package multiple-cursors
   :ensure t)
