@@ -344,8 +344,16 @@
   :init
   (yas-global-mode 1))
 
-(add-hook 'rust-ts-mode-hook #'eglot-ensure)
-(add-hook 'go-ts-mode-hook #'eglot-ensure)
+(defun eglot-init ()
+  "Initiatize eglot"
+  (eglot-ensure)
+  (local-set-key (kbd "M-\\") 'eglot-format))
+
+(require 'eglot)
+(add-hook 'rust-ts-mode-hook 'eglot-init)
+(add-hook 'go-ts-mode-hook 'eglot-ensure)
+(add-hook 'zig-mode-hook 'eglot-ensure)
+(setq eglot-confirm-server-initiated-edits nil)
 
 (use-package multiple-cursors
   :ensure t)

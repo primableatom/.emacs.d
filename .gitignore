@@ -7,6 +7,7 @@
 /auto-save-list/
 /eshell/
 /treesitter-grammers
+/tree-sitter
 projectile-bookmarks.eld
 projectile.cache
 custom.el
