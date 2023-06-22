@@ -223,6 +223,10 @@
 (use-package vterm
   :ensure t)
 
+(use-package multi-vterm
+  :ensure t)
+
+
 (use-package ruby-end
   :ensure t
   :config
@@ -389,7 +393,7 @@
 (global-set-key (kbd "S-<down>") 'windmove-down)
 (global-set-key (kbd "C-c f p") 'go-to-emacs-init-file)
 (global-set-key (kbd "C-.") 'comment-or-uncomment-region)
-(global-set-key (kbd "C-c v t") 'vterm)
+(global-set-key (kbd "C-c v t") 'multi-vterm-project)
 (global-set-key (kbd "C-c t") 'treemacs/toggle)
 (global-set-key (kbd "C-M-j") 'mc/mark-all-dwim)
 (global-set-key (kbd "C-M-c") 'mc/edit-lines)
