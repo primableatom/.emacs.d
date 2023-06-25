@@ -351,7 +351,8 @@
 (defun eglot-init ()
   "Initiatize eglot"
   (eglot-ensure)
-  (local-set-key (kbd "M-\\") 'eglot-format))
+  (local-set-key (kbd "m-\\") 'eglot-format)
+  (local-set-key (kbd "M-]") 'eglot-inlay-hints-mode))
 
 (require 'eglot)
 (add-hook 'rust-ts-mode-hook 'eglot-init)
