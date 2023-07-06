@@ -263,7 +263,6 @@
 (use-package projectile
   :ensure t
   :config
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-mode +1))
 
 (use-package treemacs
@@ -341,7 +340,8 @@
   :bind (("C-x b" . consult-buffer)
          ("M-y" . consult-yank-pop)
 	 ("C-c p f" . consult-find)
-	 ("C-c p s r" . consult-ripgrep)))
+	 ("C-c p s" . consult-ripgrep)
+	 ("C-c p p" . projectile-switch-project)))
 
 (use-package yasnippet
   :ensure t
