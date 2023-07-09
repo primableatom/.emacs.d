@@ -48,7 +48,7 @@
 (setq enable-recursive-minibuffers nil)
 (setq completion-cycle-threshold 1)
 (setq completions-detailed t)
-(setq tab-always-indent 'complete)
+(setq tab-always-indent t)
 (setq completion-styles '(basic initials substring))
 (setq completion-auto-help 'always)
 (setq completion-auto-select 'second-tab)
@@ -98,6 +98,8 @@
 (add-to-list 'tab-bar-format 'tab-bar-format-global 'append)
 (setq display-time-format "%a %F %T")
 (setq display-time-interval 1)
+(setq js-indent-level 2)
+
 (display-time-mode)
 
 (use-package dracula-theme
@@ -351,13 +353,19 @@
 (defun eglot-init ()
   "Initiatize eglot"
   (eglot-ensure)
-  (local-set-key (kbd "m-\\") 'eglot-format)
+  (local-set-key (kbd "M-\\") 'eglot-format)
   (local-set-key (kbd "M-]") 'eglot-inlay-hints-mode))
+
+(defun jsx-eglot-init ()
+  (eglot-init)
+  (setq-local tab-width 2))
 
 (require 'eglot)
 (add-hook 'rust-ts-mode-hook 'eglot-init)
-(add-hook 'go-ts-mode-hook 'eglot-ensure)
-(add-hook 'zig-mode-hook 'eglot-ensure)
+(add-hook 'go-ts-mode-hook 'eglot-init)
+(add-hook 'zig-mode-hook 'eglot-init)
+(add-hook 'js-jsx-mode-hook 'jsx-eglot-init)
+
 (setq eglot-confirm-server-initiated-edits nil)
 
 (use-package multiple-cursors
@@ -378,6 +386,7 @@
 (add-to-list 'auto-mode-alist '("\\.gemspec\\'" . ruby-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . js-jsx-mode))
 (add-to-list 'auto-mode-alist '("\\.ts?\\'" . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.y?ml\\'" . yaml-ts-mode))
