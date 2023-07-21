@@ -353,6 +353,9 @@
 (defun eglot-init ()
   "Initiatize eglot"
   (eglot-ensure)
+  (local-set-key (kbd "M-.") 'xref-find-definitions)
+  (local-set-key (kbd "M-?") 'xref-find-references)
+  (local-set-key (kbd "M-,") 'xref-go-back)
   (local-set-key (kbd "M-\\") 'eglot-format)
   (local-set-key (kbd "M-]") 'eglot-inlay-hints-mode))
 
