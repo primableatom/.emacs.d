@@ -412,6 +412,8 @@
 (global-set-key (kbd "C-M-.") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-M-<") 'mc/skip-to-previous-like-this)
 (global-set-key (kbd "C-M->") 'mc/skip-to-next-like-this)
+(global-set-key (kbd "C-M-;") 'mc/edit-beginnings-of-lines)
+(global-set-key (kbd "C-M-'") 'mc/edit-ends-of-lines)
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (when (file-exists-p custom-file)
