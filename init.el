@@ -223,10 +223,14 @@
   :init (doom-modeline-mode 1))
 
 (use-package vterm
-  :ensure t)
+  :ensure t
+  :bind
+  (("C-S-y" . vterm-yank)))
 
 (use-package multi-vterm
-  :ensure t)
+  :ensure t
+  :bind
+  (("C-c v t" . multi-vterm-project)))
 
 
 (use-package ruby-end
@@ -270,6 +274,8 @@
 (use-package treemacs
   :ensure t
   :defer t
+  :bind
+  (("C-c t" . treemacs/toggle))
   :config
   (treemacs-project-follow-mode t)
   (treemacs-follow-mode t)
@@ -350,6 +356,9 @@
   :init
   (yas-global-mode 1))
 
+(use-package zig-mode
+  :ensure t)
+
 (defun eglot-init ()
   "Initiatize eglot"
   (eglot-ensure)
@@ -372,7 +381,17 @@
 (setq eglot-confirm-server-initiated-edits nil)
 
 (use-package multiple-cursors
-  :ensure t)
+  :ensure t
+  :bind
+  (("C-M-j" . mc/mark-all-dwim)
+   ("C-M-c" . mc/edit-lines)
+   ("C-M-/" . mc/mark-all-like-this)
+   ("C-M-," . mc/mark-previous-like-this)
+   ("C-M-." . mc/mark-next-like-this)
+   ("C-M-<" . mc/skip-to-previous-like-this)
+   ("C-M->" . mc/skip-to-next-like-this)
+   ("C-M-;" . mc/edit-beginnings-of-lines)
+   ("C-M-'" . mc/edit-ends-of-lines)))
 
 (use-package terraform-mode
   :ensure t)
@@ -406,17 +425,6 @@
 (global-set-key (kbd "S-<down>") 'windmove-down)
 (global-set-key (kbd "C-c f p") 'go-to-emacs-init-file)
 (global-set-key (kbd "C-.") 'comment-or-uncomment-region)
-(global-set-key (kbd "C-c v t") 'multi-vterm-project)
-(global-set-key (kbd "C-c t") 'treemacs/toggle)
-(global-set-key (kbd "C-M-j") 'mc/mark-all-dwim)
-(global-set-key (kbd "C-M-c") 'mc/edit-lines)
-(global-set-key (kbd "C-M-/") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-M-,") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-M-.") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-M-<") 'mc/skip-to-previous-like-this)
-(global-set-key (kbd "C-M->") 'mc/skip-to-next-like-this)
-(global-set-key (kbd "C-M-;") 'mc/edit-beginnings-of-lines)
-(global-set-key (kbd "C-M-'") 'mc/edit-ends-of-lines)
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (when (file-exists-p custom-file)
