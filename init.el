@@ -425,6 +425,8 @@
 (global-set-key (kbd "S-<down>") 'windmove-down)
 (global-set-key (kbd "C-c f p") 'go-to-emacs-init-file)
 (global-set-key (kbd "C-.") 'comment-or-uncomment-region)
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (when (file-exists-p custom-file)
