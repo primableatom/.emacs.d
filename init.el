@@ -365,7 +365,9 @@
   (local-set-key (kbd "M-.") 'xref-find-definitions)
   (local-set-key (kbd "M-?") 'xref-find-references)
   (local-set-key (kbd "M-,") 'xref-go-back)
+  (local-set-key (kbd "M-'") 'xref-go-forward)
   (local-set-key (kbd "M-\\") 'eglot-format)
+  (local-set-key (kbd "M-[") 'eglot-code-actions)
   (local-set-key (kbd "M-]") 'eglot-inlay-hints-mode))
 
 (defun jsx-eglot-init ()
@@ -376,6 +378,7 @@
 (add-hook 'rust-ts-mode-hook 'eglot-init)
 (add-hook 'go-ts-mode-hook 'eglot-init)
 (add-hook 'zig-mode-hook 'eglot-init)
+(add-hook 'java-ts-mode-hook 'eglot-init)
 (add-hook 'js-jsx-mode-hook 'jsx-eglot-init)
 
 (setq eglot-confirm-server-initiated-edits nil)
