@@ -20,6 +20,8 @@
 
 (savehist-mode)
 
+(set-language-environment "UTF-8")
+
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -61,6 +63,7 @@
   :ensure t
   :config
   (setq treesit-auto-install t)
+  (setq treesit-auto-opt-out-list '(protobuf))
   (global-treesit-auto-mode))
 
 
@@ -383,6 +386,13 @@
 
 (setq eglot-confirm-server-initiated-edits nil)
 
+
+(use-package flycheck-eglot
+  :ensure t
+  :after (flycheck eglot)
+  :config
+  (global-flycheck-eglot-mode 1))
+
 (use-package multiple-cursors
   :ensure t
   :bind
@@ -416,7 +426,7 @@
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.y?ml\\'" . yaml-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.java\\'" . java-ts-mode))
-(add-to-list 'auto-mode-alist '("\\*Dockerfile*\\'" . dockerfile-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.*Dockerfile.*\\'" . dockerfile-ts-mode))
 (add-to-list 'auto-mode-alist '("\\*dashboard*\\'" . dashboard-mode))
 
 
