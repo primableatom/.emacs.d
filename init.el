@@ -159,9 +159,10 @@
 
 
 (use-package corfu-terminal
-  :if (not (display-graphic-p))
-  :config
-  (corfu-terminal-mode))
+  :ensure t)
+
+(unless (display-graphic-p)
+  (corfu-terminal-mode +1))
 
 (use-package kind-icon
   :if (display-graphic-p)
@@ -385,13 +386,10 @@
 (add-hook 'js-jsx-mode-hook 'jsx-eglot-init)
 
 (setq eglot-confirm-server-initiated-edits nil)
+(use-package dart-mode
+  :ensure t)
 
 
-(use-package flycheck-eglot
-  :ensure t
-  :after (flycheck eglot)
-  :config
-  (global-flycheck-eglot-mode 1))
 
 (use-package multiple-cursors
   :ensure t
@@ -407,7 +405,9 @@
    ("C-M-'" . mc/edit-ends-of-lines)))
 
 (use-package terraform-mode
-  :ensure t)
+  :ensure t
+  :config
+  (setq terraform-format-on-save t))
 
 ;; autoloads
 
@@ -420,7 +420,7 @@
 (add-to-list 'auto-mode-alist '("\\Capfile\\'" . ruby-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.gemspec\\'" . ruby-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . js-jsx-mode))
 (add-to-list 'auto-mode-alist '("\\.ts?\\'" . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
