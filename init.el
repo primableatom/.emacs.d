@@ -37,6 +37,10 @@
 
 (require 'use-package)
 
+(unless (package-installed-p 'vc-use-package)
+  (package-vc-install "https://github.com/slotThe/vc-use-package"))
+(require 'vc-use-package)
+
 (use-package exec-path-from-shell
   :ensure t
   :config
@@ -250,9 +254,9 @@
 (use-package popper
   :ensure t
   :bind
-  (("C-`"   . popper-toggle-latest)
+  (("C-`"   . popper-toggle)
    ("M-`"   . popper-cycle)
-   ("C-M-`" . popper-toggle-type))
+   ("C-M-=" . popper-toggle-type))
   :config
   (setq popper-reference-buffers
       (append popper-reference-buffers
@@ -363,6 +367,13 @@
 (use-package zig-mode
   :ensure t)
 
+
+(defun reset-lsp-hooks ()
+  (setq rust-ts-mode-hook nil)
+  (setq go-ts-mode-hook nil)
+  (setq zig-ts-mode-hook nil)
+  (setq js-jsx-mode-hook nil))
+
 (defun eglot-init ()
   "Initiatize eglot"
   (eglot-ensure)
@@ -378,18 +389,39 @@
   (eglot-init)
   (setq-local tab-width 2))
 
-(require 'eglot)
-(add-hook 'rust-ts-mode-hook 'eglot-init)
-(add-hook 'go-ts-mode-hook 'eglot-init)
-(add-hook 'zig-mode-hook 'eglot-init)
-(add-hook 'java-ts-mode-hook 'eglot-init)
-(add-hook 'js-jsx-mode-hook 'jsx-eglot-init)
 
-(setq eglot-confirm-server-initiated-edits nil)
+(use-package lsp-bridge
+  :vc (:fetcher "github" :repo "manateelazycat/lsp-bridge")
+  :init
+  (setq lsp-bridge-enable-inlay-hint t)
+  (setq lsp-bridge-enable-hover-diagnostic t)
+  (setq lsp-bridge-signature-show-function 'message)
+  (setq lsp-bridge-user-langserver-dir "~/.emacs.d/langserver")
+  (setq lsp-bridge-epc-debug t)
+  ;;(setq acm-enable-doc t)
+  :bind (("M-." . 'lsp-bridge-find-def)
+	 ("M-?" . 'lsp-bridge-find-references)
+	 ("M-," . 'lsp-bridge-find-def-return)
+	 ("M-\\" . 'lsp-bridge-code-format)
+	 ("M-[" . 'lsp-bridge-code-action)
+	 ("M-p" . 'lsp-bridge-popup-documentation)
+	 ("M-n" . 'lsp-bridge-rename)
+	 ("M-o" . 'lsp-bridge-diagnostic-list)
+	 ("M-<up>" . 'lsp-bridge-popup-documentation-scroll-down)
+	 ("M-<down>" . 'lsp-bridge-popup-documentation-scroll-up)))
+
+
+
+(defun setup-lsp-bridge ()
+  (reset-lsp-hooks)
+  (global-corfu-mode -1)
+  (global-flycheck-mode -1)
+  (global-lsp-bridge-mode))
+
+(setup-lsp-bridge)
+
 (use-package dart-mode
   :ensure t)
-
-
 
 (use-package multiple-cursors
   :ensure t
@@ -410,7 +442,6 @@
   (setq terraform-format-on-save t))
 
 ;; autoloads
-
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
@@ -431,7 +462,6 @@
 
 
 ;; keybindings
-
 (global-set-key (kbd "S-<left>") 'windmove-left)
 (global-set-key (kbd "S-<right>") 'windmove-right)
 (global-set-key (kbd "S-<up>") 'windmove-up)
@@ -441,7 +471,7 @@
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 
+;; custom file
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (when (file-exists-p custom-file)
     (load custom-file))
-
