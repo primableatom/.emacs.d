@@ -368,37 +368,21 @@
   :ensure t)
 
 
-(defun reset-lsp-hooks ()
-  (setq rust-ts-mode-hook nil)
-  (setq go-ts-mode-hook nil)
-  (setq zig-ts-mode-hook nil)
-  (setq js-jsx-mode-hook nil))
-
-(defun eglot-init ()
-  "Initiatize eglot"
-  (eglot-ensure)
-  (local-set-key (kbd "M-.") 'xref-find-definitions)
-  (local-set-key (kbd "M-?") 'xref-find-references)
-  (local-set-key (kbd "M-,") 'xref-go-back)
-  (local-set-key (kbd "M-'") 'xref-go-forward)
-  (local-set-key (kbd "M-\\") 'eglot-format)
-  (local-set-key (kbd "M-[") 'eglot-code-actions)
-  (local-set-key (kbd "M-]") 'eglot-inlay-hints-mode))
-
-(defun jsx-eglot-init ()
-  (eglot-init)
-  (setq-local tab-width 2))
-
 
 (use-package lsp-bridge
   :vc (:fetcher "github" :repo "manateelazycat/lsp-bridge")
-  :init
+  :config
   (setq lsp-bridge-enable-inlay-hint t)
   (setq lsp-bridge-enable-hover-diagnostic t)
   (setq lsp-bridge-signature-show-function 'message)
-  (setq lsp-bridge-user-langserver-dir "~/.emacs.d/langserver")
+  ;; (setq lsp-bridge-user-langserver-dir "~/.emacs.d/langserver")
   (setq lsp-bridge-epc-debug t)
   ;;(setq acm-enable-doc t)
+  :hook ((rust-ts-mode . 'lsp-bridge-init)
+	 (go-ts-mode . 'lsp-bridge-init)
+	 (zig-mode .'lsp-bridge-init)
+	 (java-ts-mode . 'lsp-bridge-init)
+	 (js-jsx-mode . 'jsx-lsp-bridge-init))
   :bind (("M-." . 'lsp-bridge-find-def)
 	 ("M-?" . 'lsp-bridge-find-references)
 	 ("M-," . 'lsp-bridge-find-def-return)
@@ -412,13 +396,15 @@
 
 
 
-(defun setup-lsp-bridge ()
-  (reset-lsp-hooks)
+(defun lsp-bridge-init ()
   (global-corfu-mode -1)
   (global-flycheck-mode -1)
-  (global-lsp-bridge-mode))
+  (lsp-bridge-mode 1))
 
-(setup-lsp-bridge)
+(defun jsx-lsp-bridge-init ()
+  (lsp-bridge-init)
+  (setq-local tab-width 2))
+
 
 (use-package dart-mode
   :ensure t)
