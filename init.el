@@ -372,22 +372,24 @@
 (use-package lsp-bridge
   :vc (:fetcher "github" :repo "manateelazycat/lsp-bridge")
   :config
+  ;; works only if the langserver setting is enabled
   (setq lsp-bridge-enable-inlay-hint t)
   (setq lsp-bridge-enable-hover-diagnostic t)
   (setq lsp-bridge-signature-show-function 'message)
   ;; (setq lsp-bridge-user-langserver-dir "~/.emacs.d/langserver")
   (setq lsp-bridge-epc-debug t)
   ;;(setq acm-enable-doc t)
-  :hook ((rust-ts-mode . 'lsp-bridge-init)
-	 (go-ts-mode . 'lsp-bridge-init)
-	 (zig-mode .'lsp-bridge-init)
-	 (java-ts-mode . 'lsp-bridge-init)
-	 (js-jsx-mode . 'jsx-lsp-bridge-init))
+  :hook ((rust-ts-mode . 'my/lsp-bridge-init)
+	 (go-ts-mode . 'my/lsp-bridge-init)
+	 (zig-mode .'my/lsp-bridge-init)
+	 (java-ts-mode . 'my/lsp-bridge-init)
+	 (js-jsx-mode . 'my/jsx-lsp-bridge-init))
   :bind (("M-." . 'lsp-bridge-find-def)
 	 ("M-?" . 'lsp-bridge-find-references)
 	 ("M-," . 'lsp-bridge-find-def-return)
 	 ("M-\\" . 'lsp-bridge-code-format)
 	 ("M-[" . 'lsp-bridge-code-action)
+	 ("M-]" . 'my/lsp-bridge-toggle-inlay-hints)
 	 ("M-p" . 'lsp-bridge-popup-documentation)
 	 ("M-n" . 'lsp-bridge-rename)
 	 ("M-o" . 'lsp-bridge-diagnostic-list)
@@ -396,15 +398,24 @@
 
 
 
-(defun lsp-bridge-init ()
+(defun my/lsp-bridge-init ()
+  "Initialize lsp-bridge."
   (global-corfu-mode -1)
   (global-flycheck-mode -1)
   (lsp-bridge-mode 1))
 
-(defun jsx-lsp-bridge-init ()
-  (lsp-bridge-init)
+(defun my/jsx-lsp-bridge-init ()
+  "Initialize JSX lsp-bridge."
+  (my/lsp-bridge-init)
   (setq-local tab-width 2))
 
+(defun my/lsp-bridge-toggle-inlay-hints ()
+  "Toggle inlay hints."
+  (interactive)
+  (if (null lsp-bridge-enable-inlay-hint)
+      (setq lsp-bridge-enable-inlay-hint t)
+    (setq lsp-bridge-enable-inlay-hint nil))
+  (lsp-bridge-restart-process))
 
 (use-package dart-mode
   :ensure t)
