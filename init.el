@@ -159,6 +159,7 @@
 
 
 (use-package corfu-terminal
+  :unless (display-graphic-p)
   :ensure t)
 
 (unless (display-graphic-p)
@@ -210,15 +211,6 @@
 (use-package rg
   :ensure t)
 
-(use-package flycheck
-  :ensure t
-  :config
-  (flycheck-add-mode 'ruby-rubocop 'ruby-ts-mode)
-  (flycheck-add-mode 'javascript-eslint 'js-ts-mode)
-  (setq flycheck-ruby-rubocop-executable "~/.asdf/shims/rubocop")
-  (setq flycheck-javascript-eslint-executable "~/.asdf/shims/eslint")
-  :init (global-flycheck-mode))
-
 (use-package all-the-icons
   :ensure t)
 
@@ -247,6 +239,12 @@
 
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 
+(add-to-list 'display-buffer-alist
+             '("^\\*Flymake diagnostics"
+               (display-buffer-reuse-window display-buffer-pop-up-window)
+	       (inhibit-same-window . t)
+               (window-height . 10)))
+
 (use-package popper
   :ensure t
   :bind
@@ -272,6 +270,10 @@
 
 (use-package projectile
   :ensure t
+  :bind
+  (("C-c p f" . projectile-find-file)
+   ("C-c p s" . projectile-ripgrep)
+   ("C-c p p" . projectile-switch-project))
   :config
   (projectile-mode +1))
 
@@ -350,10 +352,7 @@
    consult--source-buffer :hidden t :default nil)
   (add-to-list 'consult-buffer-sources persp-consult-source)
   :bind (("C-x b" . consult-buffer)
-         ("M-y" . consult-yank-pop)
-	 ("C-c p f" . consult-find)
-	 ("C-c p s" . consult-ripgrep)
-	 ("C-c p p" . projectile-switch-project)))
+         ("M-y" . consult-yank-pop)))
 
 (use-package yasnippet
   :ensure t
@@ -363,8 +362,15 @@
 (use-package zig-mode
   :ensure t)
 
+(use-package templ-ts-mode
+  :ensure t)
+
+(defun prog-mode-init ()
+  (local-set-key (kbd "M-o") 'flymake-show-project-diagnostics))
+
 (defun eglot-init ()
   "Initiatize eglot"
+  (prog-mode-init)
   (eglot-ensure)
   (local-set-key (kbd "M-.") 'xref-find-definitions)
   (local-set-key (kbd "M-?") 'xref-find-references)
@@ -372,7 +378,8 @@
   (local-set-key (kbd "M-'") 'xref-go-forward)
   (local-set-key (kbd "M-\\") 'eglot-format)
   (local-set-key (kbd "M-[") 'eglot-code-actions)
-  (local-set-key (kbd "M-]") 'eglot-inlay-hints-mode))
+  (local-set-key (kbd "M-]") 'eglot-inlay-hints-mode)
+  (local-set-key (kbd "M-n") 'eglot-rename))
 
 (defun jsx-eglot-init ()
   (eglot-init)
@@ -381,9 +388,11 @@
 (require 'eglot)
 (add-hook 'rust-ts-mode-hook 'eglot-init)
 (add-hook 'go-ts-mode-hook 'eglot-init)
+(add-hook 'templ-ts-mode-hook 'eglot-init)
 (add-hook 'zig-mode-hook 'eglot-init)
 (add-hook 'java-ts-mode-hook 'eglot-init)
 (add-hook 'js-jsx-mode-hook 'jsx-eglot-init)
+(add-hook 'ruby-ts-mode-hook 'prog-mode-init)
 
 (setq eglot-confirm-server-initiated-edits nil)
 (use-package dart-mode
@@ -440,6 +449,10 @@
 (global-set-key (kbd "C-.") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "C-<left>") 'backward-word)
+(global-set-key (kbd "C-<right>") 'forward-word)
+
+
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (when (file-exists-p custom-file)
