@@ -281,7 +281,7 @@
   :ensure t
   :defer t
   :bind
-  (("C-c t" . treemacs/toggle))
+  (("C-c t" . pr/treemacs-toggle))
   :config
   (treemacs-project-follow-mode t)
   (treemacs-follow-mode t)
@@ -299,16 +299,16 @@
   :ensure t)
 
 
-(defun revert-buffer-no-confirm ()
+(defun pr/revert-buffer-no-confirm ()
   "Revert buffer without confirmation."
   (interactive) (revert-buffer t t))
 
-(defun go-to-emacs-init-file ()
+(defun pr/go-to-emacs-init-file ()
   "Go to init.el under .emacs.d"
   (interactive) (find-file (f-join user-emacs-directory "init.el")))
 
 
-(defun treemacs/toggle ()
+(defun pr/treemacs-toggle ()
   "Initialize or toggle treemacs"
   (interactive)
   (require 'treemacs)
@@ -365,12 +365,12 @@
 (use-package templ-ts-mode
   :ensure t)
 
-(defun prog-mode-init ()
+(defun pr/prog-mode-init ()
   (local-set-key (kbd "M-o") 'flymake-show-project-diagnostics))
 
-(defun eglot-init ()
+(defun pr/eglot-init ()
   "Initiatize eglot"
-  (prog-mode-init)
+  (pr/prog-mode-init)
   (eglot-ensure)
   (local-set-key (kbd "M-.") 'xref-find-definitions)
   (local-set-key (kbd "M-?") 'xref-find-references)
@@ -381,18 +381,18 @@
   (local-set-key (kbd "M-]") 'eglot-inlay-hints-mode)
   (local-set-key (kbd "M-n") 'eglot-rename))
 
-(defun jsx-eglot-init ()
-  (eglot-init)
+(defun pr/jsx-eglot-init ()
+  (pr/eglot-init)
   (setq-local tab-width 2))
 
 (require 'eglot)
-(add-hook 'rust-ts-mode-hook 'eglot-init)
-(add-hook 'go-ts-mode-hook 'eglot-init)
-(add-hook 'templ-ts-mode-hook 'eglot-init)
-(add-hook 'zig-mode-hook 'eglot-init)
-(add-hook 'java-ts-mode-hook 'eglot-init)
-(add-hook 'js-jsx-mode-hook 'jsx-eglot-init)
-(add-hook 'ruby-ts-mode-hook 'prog-mode-init)
+(add-hook 'rust-ts-mode-hook 'pr/eglot-init)
+(add-hook 'go-ts-mode-hook 'pr/eglot-init)
+(add-hook 'templ-ts-mode-hook 'pr/eglot-init)
+(add-hook 'zig-mode-hook 'pr/eglot-init)
+(add-hook 'java-ts-mode-hook 'pr/eglot-init)
+(add-hook 'js-jsx-mode-hook 'pr/jsx-eglot-init)
+(add-hook 'ruby-ts-mode-hook 'pr/prog-mode-init)
 
 (setq eglot-confirm-server-initiated-edits nil)
 (use-package dart-mode
@@ -417,6 +417,20 @@
   :ensure t
   :config
   (setq terraform-format-on-save t))
+
+
+(defun pr/duplicate-line ()
+  "Duplicate current line"
+  (interactive)
+  (let ((column (- (point) (point-at-bol)))
+        (line (let ((s (thing-at-point 'line t)))
+                (if s (string-remove-suffix "\n" s) ""))))
+    (move-end-of-line 1)
+    (newline)
+    (insert line)
+    (move-beginning-of-line 1)
+    (forward-char column)))
+
 
 ;; autoloads
 
@@ -445,12 +459,15 @@
 (global-set-key (kbd "S-<right>") 'windmove-right)
 (global-set-key (kbd "S-<up>") 'windmove-up)
 (global-set-key (kbd "S-<down>") 'windmove-down)
-(global-set-key (kbd "C-c f p") 'go-to-emacs-init-file)
+(global-set-key (kbd "C-c f p") 'pr/go-to-emacs-init-file)
+(global-set-key (kbd "C-C g") 'pr/revert-buffer-no-confirm)
 (global-set-key (kbd "C-.") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-<left>") 'backward-word)
 (global-set-key (kbd "C-<right>") 'forward-word)
+(global-set-key (kbd "C-,") 'pr/duplicate-line)
+
 
 
 
